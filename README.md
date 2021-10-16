@@ -1,6 +1,6 @@
 # Web-Cam-Marker-Tracker
 Tracks up to 2 checker markers in a webcam.  
-Based on DirectShow.Net  
+Based on DirectShow.Net. Tracking written from scratch. (Does not use OpenCV)  
 Below shows a simple cap that works well with this software. The cap keeps the orientation of the markers.  
 ![alt text](https://github.com/ScienceExp/Web-Cam-Marker-Tracker/blob/main/TrackerCapSide.jpg)
 
