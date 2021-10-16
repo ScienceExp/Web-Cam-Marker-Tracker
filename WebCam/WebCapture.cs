@@ -92,6 +92,7 @@ namespace WebCam
             procesor = new Procesor(CaptureWidth, CaptureHeight, TrackerMarkerSize);
             procesor.ShowDebug = ShowTrackerDebug;
             procesor.tracker.minimumPositive = TrackerMinimumMatch;
+            procesor.tracker.markerSize = TrackerMarkerSize;
 
             DsDevice[] devices = DsDevice.GetDevicesOfCat(FilterCategory.VideoInputDevice);
             // foreach (DsDevice device in devices)

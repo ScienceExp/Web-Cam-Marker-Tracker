@@ -74,7 +74,7 @@
             this.webCapture1.CaptureWidth = 320;
             this.webCapture1.Location = new System.Drawing.Point(2, 2);
             this.webCapture1.Name = "webCapture1";
-            this.webCapture1.ShowTrackerDebug = true;
+            this.webCapture1.ShowTrackerDebug = false;
             this.webCapture1.Size = new System.Drawing.Size(320, 240);
             this.webCapture1.TabIndex = 2;
             this.webCapture1.TrackerMarkerSize = 8;

@@ -38,7 +38,7 @@ namespace WebCam
         /// <summary>This is the final marker locations once all processing is done</summary>
         Point[] Markers;
         /// <summary>Size of the marker that is being generated and searched for</summary>
-        int markerSize;
+        public int markerSize;
         /// <summary>How close the sum of pixels needs to match the tracker to be considered a possablitly</summary>
         public float minimumPositive = 0.3f;
         /// <summary>Holds all the locations that give a value above minimumPositive</summary>
@@ -85,6 +85,8 @@ namespace WebCam
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Find(ImageBuffer buffer)
         {
+            PossibleMarkers = new List<match>();
+
             ImageBufferToIntensity(buffer); 
         }
         #endregion
@@ -171,7 +173,6 @@ namespace WebCam
             int hY = markerSize / 2;
             float div = hX * hY * 2;
 
-            PossibleMarkers = new List<match>();
             for (int y = markerSize; y < height; y++)
             {
                 for (int x = markerSize; x < width; x++)
@@ -210,15 +211,18 @@ namespace WebCam
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         void ProcessPossibleMarkers()
         {
-            int distance = 4; //4 pixels
+            int distance = markerSize/2; 
             int Marker1 = -1;
             int Marker2 = -1;
             if (PossibleMarkers.Count > 0)
             {
                 List<Point> p = new List<Point>();
                 List<float> total = new List<float>();
+                List<int> count = new List<int>();
                 p.Add(PossibleMarkers[0].point);
                 total.Add(PossibleMarkers[0].score);
+                count.Add(1);
+
                 bool bMatch = false;
                 for (int i = 1; i < PossibleMarkers.Count; i++)
                 {
@@ -231,6 +235,12 @@ namespace WebCam
                             {
                                 bMatch = true;
                                 total[j] += PossibleMarkers[i].score;
+
+                                //Get the best x,y position
+                                if (PossibleMarkers[i].score>(total[j]/count[j]))
+                                    p[j] = new Point(PossibleMarkers[i].point.X, PossibleMarkers[i].point.Y);
+
+                                count[j] += 1;
                                 break;
 
                             }
@@ -240,10 +250,13 @@ namespace WebCam
                     {
                         p.Add(PossibleMarkers[i].point);
                         total.Add(PossibleMarkers[i].score);
+                        count.Add(1);
                     }
                 }
 
+                //Holds the highest match value
                 float max = -1;
+                //Holds the 2nd highest match value
                 float secondMax = -1;
 
                 for (int j = 0; j < p.Count; j++)
@@ -262,6 +275,7 @@ namespace WebCam
                         Marker2 = j;
                     }
                 }
+
                 if (Marker1 != -1)
                 {
                     if (Marker2 != -1)

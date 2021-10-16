@@ -313,6 +313,24 @@ namespace WebCam
                 image[i] = image[i + 1] = image[i + 2] = gray;
             }
         }
+        #endregion 
+
+        #region Black and White
+        /// <summary>Converts the image to Grey scale</summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void ToBlackAndWhite()
+        {
+            for (int i = 0; i < image.Length; i += 3)
+            {
+                byte gray = (byte)(image[i + 2] * .21 + image[i + 1] * .71 + image[i] * .071);
+                if (gray < 128)
+                    gray = 0;
+                else
+                    gray = 255;
+                image[i] = image[i + 1] = image[i + 2] = gray;
+            }
+        }
+
 
         /// <summary>Converts the image to Grey scale. But any pixel that does not meet the Gray threshold is turned black</summary>
         /// <param name="threshhold">Pixels with greyscale values below this are turned black</param>

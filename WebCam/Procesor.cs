@@ -56,7 +56,7 @@ namespace WebCam
         {
             pMem = pBuffer;
             buffer[current].CopyImageFromPointer(pMem);
-
+            
             tracker.Find(buffer[current]);
 
             if (ShowDebug)
@@ -72,6 +72,7 @@ namespace WebCam
             if (!ready)
                 MessageBox.Show("EndDraw() called before StartDraw()");
 
+            int half = tracker.markerSize / 2;
             #region Draw Debug
             if (ShowDebug)
             {
@@ -80,13 +81,21 @@ namespace WebCam
 
                 // Draws every point that could be a possible marker
                 foreach (Tracker.match p in tracker.PossibleMarkers)
-                    buffer[current].SetPixel(p.point.X-4,p.point.Y-4, Color.Red);
+                    buffer[current].SetPixel(p.point.X- half, p.point.Y- half, Color.Red);
             }
             #endregion
 
-            #region Draw markers on screen
-            buffer[current].DrawCircle(tracker.MarkerLocations[0], 4, Color.Green);
-            buffer[current].DrawCircle(tracker.MarkerLocations[1], 4, Color.Blue);
+            #region Draw markers on screen 
+            if (tracker.MarkerLocations[0].X > 0 && tracker.MarkerLocations[0].Y > 0)
+            {
+                buffer[current].DrawCircle(tracker.MarkerLocations[0], half, Color.Red);
+                buffer[current].SetPixel(tracker.MarkerLocations[0].X, tracker.MarkerLocations[0].Y, Color.Red);
+            }
+            if (tracker.MarkerLocations[1].X > 0 && tracker.MarkerLocations[1].Y > 0)
+            {
+                buffer[current].DrawCircle(tracker.MarkerLocations[1], half, Color.Aqua);
+                buffer[current].SetPixel(tracker.MarkerLocations[1].X, tracker.MarkerLocations[1].Y, Color.Aqua);
+            }
             buffer[current].CopyImageToPointer(pMem);
             #endregion
 
