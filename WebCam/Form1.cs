@@ -34,9 +34,16 @@ namespace WebCam
 
             lblMarker1.Text = cm1.X.ToString() + " , " + cm1.Y.ToString();
             lblMarker2.Text = cm2.X.ToString() + " , " + cm2.Y.ToString();
+
+            if (CalibrationComplete)
+            {
+                // Shows the calibrated rotations
+                lblLeftRight.Text = webCapture1.calibration.GetRotationLeftRight(webCapture1.TopMarker, webCapture1.BottomMarker).ToString();
+                lblUpDown.Text = webCapture1.calibration.GetRotationUpDown(webCapture1.TopMarker, webCapture1.BottomMarker).ToString();
+            }
         }
 
-        #region Testing Lerp for smoother transition
+        #region Testing Lerp for smoother transition (not sure it's needed)
         float speed = 0.8f;
         Point cm1 = new Point();
         Point cm2 = new Point();
@@ -51,5 +58,12 @@ namespace WebCam
             return startValue + (endValue - startValue) * speed;
         }
         #endregion
+
+        bool CalibrationComplete = false;
+        private void btnCalibrate_Click(object sender, EventArgs e)
+        {
+            webCapture1.DoCalibration();
+            CalibrationComplete = true;
+        }
     }
 }

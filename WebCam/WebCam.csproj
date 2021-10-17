@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Calibration.cs" />
     <Compile Include="GrayScaleBuffer.cs" />
     <Compile Include="Tracker.cs" />
     <Compile Include="Procesor.cs" />

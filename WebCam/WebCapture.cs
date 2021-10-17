@@ -53,6 +53,34 @@ namespace WebCam
         { get { return procesor.tracker.MarkerLocations[1]; } }
         #endregion
 
+        #region Head Tracking Calibration
+        public Calibration calibration = new Calibration();
+
+        /// <summary>Just a simple way to do calibration</summary>
+        public void DoCalibration()
+        {
+            if (MessageBox.Show("Look straight ahead at your screen.\n Click 'OK' to capture orientation.", "Calibration Step 1", MessageBoxButtons.OK) == DialogResult.OK)
+                calibration.SetCenter(TopMarker, BottomMarker);
+
+            if (MessageBox.Show("Look as far left as you normally would in game.\n Make sure trackers are still being read. \nClick 'OK' to capture orientation.", "Calibration Step 2", MessageBoxButtons.OK) == DialogResult.OK)
+                calibration.SetMaxLeftRotation(TopMarker, BottomMarker);
+
+            if (MessageBox.Show("Look as far right as you normally would in game.\n Make sure trackers are still being read. \nClick 'OK' to capture orientation.", "Calibration Step 3", MessageBoxButtons.OK) == DialogResult.OK)
+                calibration.SetMaxRightRotation(TopMarker, BottomMarker);
+
+            if (MessageBox.Show("Look as far up as you normally would in game.\n Make sure both trackers are still being read. \nClick 'OK' to capture orientation.", "Calibration Step 4", MessageBoxButtons.OK) == DialogResult.OK)
+                calibration.SetMaxUpRotation(TopMarker, BottomMarker);
+
+            if (MessageBox.Show("Look as far down as you normally would in game.\n Make sure both trackers are still being read. \nClick 'OK' to capture orientation.", "Calibration Step 5", MessageBoxButtons.OK) == DialogResult.OK)
+                calibration.SetMaxDownRotation(TopMarker, BottomMarker);
+
+            if (MessageBox.Show("Would you like to enable auto updating calibration?\n If you rotate more than the calibration max a new max will be set.", "Calibration Step 6", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                calibration.EnableContinualCalibration = true;
+            else
+                calibration.EnableContinualCalibration = false;
+        }
+        #endregion 
+
         #region Direct Show Declerations
         int _previewStride = 0;
 
